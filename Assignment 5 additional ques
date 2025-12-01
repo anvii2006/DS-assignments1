@@ -1,0 +1,224 @@
+//q1
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+Node* getIntersectionNode(Node* headA, Node* headB) {
+    if (headA == NULL || headB == NULL)
+        return NULL;
+
+    Node* p1 = headA;
+    Node* p2 = headB;
+
+    while (p1 != p2) {
+        // Move to next; if end, jump to other list’s head
+        p1 = (p1 == NULL) ? headB : p1->next;
+        p2 = (p2 == NULL) ? headA : p2->next;
+    }
+
+   return p1;
+}
+
+// Small demo
+int main() {
+       Node* common = new Node(7);
+    common->next = new Node(8);
+    common->next->next = new Node(9);
+
+    Node* headA = new Node(1);
+    headA->next = new Node(2);
+    headA->next->next = common;
+
+    Node* headB = new Node(3);
+    headB->next = new Node(4);
+    headB->next->next = common;
+
+    Node* inter = getIntersectionNode(headA, headB);
+
+    if (inter != NULL)
+        cout << "Intersection at node with data: " << inter->data << endl;
+    else
+        cout << "No intersection\n";
+
+    return 0;
+}
+
+//q2
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+void insertEnd(Node* &head, int x) {
+    Node* newNode = new Node(x);
+    if (head == NULL) {
+        head = newNode;
+        return;
+    }
+    Node* temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+    temp->next = newNode;
+}
+
+void printList(Node* head) {
+    Node* temp = head;
+    while (temp != NULL) {
+        cout << temp->data;
+        if (temp->next) cout << "->";
+        temp = temp->next;
+    }
+    cout << "\n";
+}
+Node* reverseKGroup(Node* head, int k) {
+    if (head == NULL || k <= 1) return head;
+
+    Node dummy(0);
+    dummy.next = head;
+
+    Node* prevGroupEnd = &dummy;
+
+    while (true) {
+       
+        Node* kth = prevGroupEnd;
+        for (int i = 0; i < k && kth != NULL; i++) {
+            kth = kth->next;
+        }
+        if (kth == NULL) break;   
+
+        Node* groupStart = prevGroupEnd->next;
+        Node* curr = groupStart;
+        Node* prev = kth->next;
+        Node* next;
+        while (curr != kth->next) {
+            next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+        prevGroupEnd->next = kth;     // kth is new head of this group
+        prevGroupEnd = groupStart;    // groupStart is now end of this group
+    }
+
+    return dummy.next;
+}
+
+int main() {
+    Node* head = NULL;
+
+    // Example: 1->2->3->4->5->6->7->8->9 , K = 3
+    int arr[] = {1,2,3,4,5,6,7,8,9};
+    int n = sizeof(arr)/sizeof(arr[0]);
+
+    for (int i = 0; i < n; i++) {
+        insertEnd(head, arr[i]);
+    }
+
+    cout << "Original list: ";
+    printList(head);
+
+    int K = 3;
+    head = reverseKGroup(head, K);
+
+    cout << "After reversing in groups of " << K << ": ";
+    printList(head);
+
+    return 0;
+}
+
+//q3
+
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+void insertEnd(Node* &head, int x) {
+    Node* newNode = new Node(x);
+    if (head == NULL) {
+        head = newNode;
+        return;
+    }
+    Node* temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+    temp->next = newNode;
+}
+void printList(Node* head) {
+    Node* temp = head;
+    while (temp != NULL) {
+        cout << temp->data << " -> ";
+        temp = temp->next;
+    }
+    cout << "NULL\n";
+}
+
+Node* rotateLeft(Node* head, int k) {
+    if (head == NULL || k == 0)
+        return head;
+
+    Node* temp = head;
+    int length = 1;
+    while (temp->next != NULL) {
+        temp = temp->next;
+        length++;
+    }
+
+  
+    temp->next = head;
+
+    k = k % length;
+    if (k == 0) {
+        temp->next = NULL;
+        return head;
+    }
+
+    Node* current = head;
+    for (int i = 1; i < k; i++) {
+        current = current->next;
+    }
+
+    Node* newHead = current->next;
+    current->next = NULL;
+
+    return newHead;
+}
+
+int main() {
+    Node* head = NULL;
+    int arr[] = {10, 20, 30, 40, 50};
+    for (int x : arr) 
+        insertEnd(head, x);
+
+    cout << "Original List: ";
+    printList(head);
+
+    int k = 4;
+    head = rotateLeft(head, k);
+
+    cout << "List after rotating left by " << k << " positions: ";
+    printList(head);
+
+    return 0;
+}
