@@ -1,1 +1,595 @@
+//Q-1
+#include <iostream>
+using namespace std;
+void binary_search(int arr[],int n, int value){
+    int first = 0;
+    int last = n-1;
+    while (first<=last) {
+        int mid = first + (last-first)/2;
+        if (arr[mid]==value) {
+            cout<<"Element found at "<<mid+1;
+            break;
+        }
+        else if (arr[mid]<value) {
+            first = mid +1;
+        }
+        else {
+            last = mid -1;
+        }
+    }
+}
+int main () {
+    int n;
+    cout<<"Enter no of elements in array";
+    cin>>n;
+    int arr[n];
+    cout<<"Enter elements of array";
+    for (int i=0;i<n;i++) {
+        cin>>arr[i];
+    }
+    binary_search(arr,n,6);
+}
+//Q-2nd
+#include <iostream>
+using namespace std;
+int main () {
+    int arr[]={64,34,25,15,22,11,90};
+    int count = sizeof(arr)/sizeof(arr[0]);
+    for (int i=0;i<count;i++) {
+        for (int j=0;j<count-i-1;j++) {
+            if (arr[j]>arr[j+1]) {
+                int temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1]=temp;
 
+            }
+        }
+    }
+    for (int i=0;i<count;i++) {
+        cout<<arr[i]<<" ";
+    }
+}
+//Q-3rd
+//3a
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cout << "Enter no of elements";
+    cin >> n;
+    cout << "Enter the elements in array";
+    int arr[n];
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+    int exp_diff = arr[0] - 1;
+    for (int i = 0; i < n; i++) {
+        int cur_diff = arr[i] - (i + 1);
+        if (cur_diff != exp_diff) {
+            cout << "Missing number is " << i + 1 << endl;
+            break;
+        }
+    }
+}
+//3b
+#include <iostream>
+using namespace std;
+int main() {
+    int n;
+    cout<<"enter n ";
+    cin >> n;
+    int arr[n-1];
+    cout<<"enter ele of arr : ";
+    for (int i = 0; i < n-1; i++) cin >> arr[i];
+    int left = 0, right = n-2, mid;
+    while (left <= right) {
+        mid = left + (right - left) / 2;
+        if (arr[mid] == mid + 1)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+    cout<<"our missing no. : " ;
+    cout << left + 1;
+    return 0;
+}
+
+//Q4
+#include <stdio.h>
+
+int main() {
+  char s1[100],s2[50];
+  int length, j;
+
+
+   printf (" \n Enter First string ");
+   scanf( "%s", &s1);
+
+   printf (" \n Enter Second string ");
+   scanf( "%s", &s2);
+
+
+  // store length of s1 in the length variable
+  length = 0;
+  while (s1[length] != '\0') {
+    ++length;
+  }
+
+
+// concatenate s2 to s1 q-4a
+  for (j = 0; s2[j] != '\0'; ++j, ++length) {
+    s1[length] = s2[j];
+  }
+
+  printf("After concatenation: ");
+  printf( "%s", s1);
+
+
+  return 0;
+}
+
+
+//reverse q-4b
+#include <stdio.h>
+
+void main()
+{
+    char str[50], temp; // define the size of str[] array
+    int i, left, right, len;
+    printf (" \n Display a reverse string in the C: \n");
+    printf (" ----------------------- ");
+    printf (" \n Enter a string to reverse order: ");
+    scanf( "%s", &str);
+    len = strlen(str); // get the length of the string
+    left = 0; // set left index at 0
+    right = len - 1; // set right index len - 1
+    // use for loop to store the reverse string
+    for (i = left; i <right; i++)
+    {
+        temp = str[i];
+        str[i] = str[right];
+        str[right] = temp;
+        right--;
+    }
+    printf (" The reverse of the original string is: %s ",  str);
+    getch();
+}
+
+// sorting q-4d
+#include <stdbool.h>
+#include <stdio.h>
+
+int main () {
+   char string[] = "dcabe";
+   int n = strlen(string);
+   int temp;
+   int i, j;
+   printf("String before sorting - %s \n", string);
+   bool swapped;
+   for (i = 0; i < n - 1; i++) {
+      swapped = false;
+      for (j = 0; j < n - i - 1; j++) {
+         if (string[j] > string[j + 1]) {
+            temp = string[j];
+            string[j] = string[j + 1];
+            string[j + 1] = temp;
+            swapped = true;
+         }
+      }
+     if (swapped == false)
+        break;
+
+   }
+
+   printf("String after sorting  - %s \n", string);
+   return 0;
+}
+
+
+//vovel q-4c
+#include<conio.h>
+
+int main ()
+{
+    char c[200],c1[200];
+    int t=0,i,j;
+    printf("enter the string:");
+    gets(c);
+    for (i=0,j=0;c[i]!='\0';i++)
+    {
+        if(c[i]=='a' || c[i]=='e' || c[i]=='i' || c[i]=='o' || c[i]=='u');
+        else
+        {
+          c1[j++]=c[i];
+        }
+    }
+    printf("string after removals of vowels: %s",c1);
+
+}
+
+//upper to lower q-4e
+#include <stdio.h>
+#include <conio.h>
+int main ()
+{
+char str[30];
+int i;
+printf (" Enter the string: ");
+scanf (" %s", &str); // take a string
+
+ // use for loop to change string from upper case to lower case
+ for ( i = 0; i <= strlen (str); i++)
+ {
+// The ASCII value of A is 65 and Z is 90
+ if (str[i] >= 65 && str[i] <= 90)
+ str[i] = str[i] + 32; /* add 32 to string character to convert into lower case. */
+ }
+printf (" \n Upper Case to Lower case string is: %s", str);
+return 0;
+}
+
+
+//diagonal matrix
+#include <stdio.h>
+#define MAX 4
+
+int main() {
+    int i, j, a[MAX];
+    printf("\nEnter elements (row major):\n");
+    for(i = 0; i < MAX; i++)
+        scanf("%d", &a[i]);
+
+    printf("\nThe matrix is...\n");
+    for(i = 0; i < MAX; i++) {
+        for(j = 0; j < MAX; j++) {
+            if(i == j)
+                printf("%d ", a[i]);
+            else
+                printf("0 ");
+        }
+        printf("\n");
+    }
+    return 0;
+}
+
+//tridiagonal
+#include <stdio.h>
+#define MAX 4
+
+int main() {
+    int i, j, a[MAX];
+    printf("\nEnter elements (row major):\n");
+    for(i = 0; i < MAX; i++)
+        scanf("%d", &a[i]);
+
+    printf("\nThe matrix is...\n");
+    for(i = 0; i < MAX; i++) {
+        for(j = 0; j < MAX; j++) {
+            if(i == j)
+                printf("%d ", a[i]);
+            else
+                printf("0 ");
+        }
+        printf("\n");
+    }
+    return 0;
+}
+
+//triangular matrix
+#include <stdio.h>
+#define MAX 4
+
+int main() {
+    int a[4][4], size = (MAX*(MAX+1))/2;
+    printf("\nEnter elements (row major): ");
+    for (i = 0; i < size; i++)
+        scanf("%d", &a[i]);
+    printf("\nThe upper triangular matrix is...\n");
+    for (i = 0; i < MAX; i++) {
+        for (j = 0; j < MAX; j++)
+            if (i <= j)
+                printf("%d ", a[k]);
+            else
+                printf("0 ");
+        k++;
+        printf("\n");
+    }
+    k = 0;
+    printf("\nThe lower triangular matrix is...\n");
+    for (i = 0; i < MAX; i++) {
+        for (j = 0; j < MAX; j++)
+            if (i >= j) {
+                printf("%d ", a[k]);
+                k++;
+            } else
+                printf("0 ");
+        printf("\n");
+    }
+    return 0;
+}
+
+// Q-5e symmetric matrix
+#include <iostream>
+using namespace std;
+
+int main() {
+    int A[10][10], n;
+    bool isSymmetric = true;
+
+    cout << "Enter the size of square matrix (n x n): ";
+    cin >> n;
+
+    cout << "Enter the elements of the matrix:\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cin >> A[i][j];
+        }
+    }
+
+    
+    for (int i = 0; i < n && isSymmetric; i++) {
+        for (int j = 0; j < n; j++) {
+            if (A[i][j] != A[j][i]) {
+                isSymmetric = false;
+                break;
+            }
+        }
+    }
+
+    if (isSymmetric)
+        cout << "The matrix is symmetric." << endl;
+    else
+        cout << "The matrix is not symmetric." << endl;
+
+    return 0;
+}
+
+//Q-6a
+#include <iostream>
+using namespace std;
+
+int main() {
+    int A[10][3] = {
+        {3,3,4},
+        {0,0,5},
+        {0,2,8},
+        {1,1,3},
+        {2,2,6}
+    };
+
+    int B[10][3] = {
+        {3,3,3},
+        {0,0,2},
+        {1,1,4},
+        {2,0,7}
+    };
+
+    int T[10][3];
+
+    cout << "Matrix A\nRow Col Val\n";
+    for (int i=0;i<=A[0][2];i++)
+        cout << A[i][0] << "   " << A[i][1] << "   " << A[i][2] << "\n";
+    cout << endl;
+
+    cout << "Matrix B\nRow Col Val\n";
+    for (int i=0;i<=B[0][2];i++)
+        cout << B[i][0] << "   " << B[i][1] << "   " << B[i][2] << "\n";
+    cout << endl;
+
+    int n=A[0][2], k=1;
+    T[0][0]=A[0][1]; T[0][1]=A[0][0]; T[0][2]=n;
+    for (int i=0;i<A[0][1];i++) {
+        for (int j=1;j<=n;j++) {
+            if (A[j][1]==i) {
+                T[k][0]=A[j][1];
+                T[k][1]=A[j][0];
+                T[k][2]=A[j][2];
+                k++;
+            }
+        }
+    }
+    cout << "Transpose of A\nRow Col Val\n";
+    for (int i=0;i<=T[0][2];i++)
+        cout << T[i][0] << "   " << T[i][1] << "   " << T[i][2] << "\n";
+    cout << endl;
+}
+//6b
+#include <iostream>
+using namespace std;
+
+int main() {
+    int A[10][3] = {
+        {3,3,4},
+        {0,0,5},
+        {0,2,8},
+        {1,1,3},
+        {2,2,6}
+    };
+
+    int B[10][3] = {
+        {3,3,3},
+        {0,0,2},
+        {1,1,4},
+        {2,0,7}
+    };
+
+    int C[20][3];
+
+    cout << "Matrix A\nRow Col Val\n";
+    for (int i=0;i<=A[0][2];i++)
+        cout << A[i][0] << "   " << A[i][1] << "   " << A[i][2] << "\n";
+    cout << endl;
+
+    cout << "Matrix B\nRow Col Val\n";
+    for (int i=0;i<=B[0][2];i++)
+        cout << B[i][0] << "   " << B[i][1] << "   " << B[i][2] << "\n";
+    cout << endl;
+    if (A[0][0]!=B[0][0] || A[0][1]!=B[0][1]) {
+        cout << "Addition not possible!\n";
+    } else {
+        int n1=A[0][2], n2=B[0][2];
+        int i=1,j=1, k=1;
+        C[0][0]=A[0][0]; C[0][1]=A[0][1];
+        while (i<=n1 && j<=n2) {
+            if (A[i][0]<B[j][0] || (A[i][0]==B[j][0] && A[i][1]<B[j][1])) {
+                C[k][0]=A[i][0]; C[k][1]=A[i][1]; C[k][2]=A[i][2]; i++; k++;
+            }
+            else if (B[j][0]<A[i][0] || (A[i][0]==B[j][0] && B[j][1]<A[i][1])) {
+                C[k][0]=B[j][0]; C[k][1]=B[j][1]; C[k][2]=B[j][2]; j++; k++;
+            }
+            else {
+                int sum=A[i][2]+B[j][2];
+                if (sum!=0) { C[k][0]=A[i][0]; C[k][1]=A[i][1]; C[k][2]=sum; k++; }
+                i++; j++;
+            }
+        }
+        while (i<=n1) { C[k][0]=A[i][0]; C[k][1]=A[i][1]; C[k][2]=A[i][2]; i++; k++; }
+        while (j<=n2) { C[k][0]=B[j][0]; C[k][1]=B[j][1]; C[k][2]=B[j][2]; j++; k++; }
+        C[0][2]=k-1;
+
+        cout << "A + B\nRow Col Val\n";
+        for (int i=0;i<=C[0][2];i++)
+            cout << C[i][0] << "   " << C[i][1] << "   " << C[i][2] << "\n";
+        cout << endl;
+    }
+
+}
+//6c
+#include <iostream>
+using namespace std;
+
+int main() {
+    int A[10][3] = {
+        {3,3,4},
+        {0,0,5},
+        {0,2,8},
+        {1,1,3},
+        {2,2,6}
+    };
+
+    int B[10][3] = {
+        {3,3,3},
+        {0,0,2},
+        {1,1,4},
+        {2,0,7}
+    };
+
+    int M[20][3];
+
+    cout << "Matrix A\nRow Col Val\n";
+    for (int i=0;i<=A[0][2];i++)
+        cout << A[i][0] << "   " << A[i][1] << "   " << A[i][2] << "\n";
+    cout << endl;
+
+    cout << "Matrix B\nRow Col Val\n";
+    for (int i=0;i<=B[0][2];i++)
+        cout << B[i][0] << "   " << B[i][1] << "   " << B[i][2] << "\n";
+    cout << endl;
+
+    if (A[0][1]!=B[0][0]) {
+        cout << "Multiplication not possible!\n";
+    } else {
+        int k=1;
+        M[0][0]=A[0][0]; M[0][1]=B[0][1];
+        for (int i=1;i<=A[0][2];i++) {
+            for (int j=1;j<=B[0][2];j++) {
+                if (A[i][1]==B[j][0]) {
+                    int r=A[i][0], col=B[j][1], val=A[i][2]*B[j][2];
+                    int found=0;
+                    for (int x=1;x<k;x++) {
+                        if (M[x][0]==r && M[x][1]==col) {
+                            M[x][2]+=val; found=1; break;
+                        }
+                    }
+                    if (!found) {
+                        M[k][0]=r; M[k][1]=col; M[k][2]=val; k++;
+                    }
+                }
+            }
+        }
+        M[0][2]=k-1;
+
+        cout << "A * B\nRow Col Val\n";
+        for (int i=0;i<=M[0][2];i++)
+            cout << M[i][0] << "   " << M[i][1] << "   " << M[i][2] << "\n";
+    }
+
+}
+//Q-7
+#include <iostream>
+using namespace std;
+int main(){
+    int n ;
+    cout<<"enter n : ";
+    cin>>n;
+    int arr[n];
+    int c = 0;
+    cout<<" enter ele of array : ";
+    for (int i = 0 ; i<=n-1 ; i++){
+        cin>>arr[i];
+    }
+
+    for (int i = 0 ; i<n-1 ; i++ ){
+        for(int j = i+1 ; j<=n-1 ; j++){
+            if(arr[i]>arr[j]){
+                c++ ;
+             cout<<"("<<i<<","<<j<<")"<<endl;
+            }
+        }
+     }
+
+    cout<<"there are "<<c<<" inversion pairs in our array " ;
+    return 0 ;
+
+}
+//Q8
+#include <iostream>
+using namespace std;
+
+struct Triplet {
+    int row;
+    int col;
+    int value;
+};
+
+void inputTriplet(Triplet mat[], int &nonZero) {
+    cout << "Enter number of non-zero elements: ";
+    cin >> nonZero;
+    cout << "Enter triplet elements (row col value):\n";
+    for (int i = 0; i < nonZero; i++) {
+        cin >> mat[i].row >> mat[i].col >> mat[i].value;
+    }
+}
+
+void displayTriplet(Triplet mat[], int n) {
+    cout << "Row\tCol\tValue\n";
+    for (int i = 0; i < n; i++) {
+        cout << mat[i].row << "\t" << mat[i].col << "\t" << mat[i].value << "\n";
+    }
+}
+
+void transpose(Triplet mat[], Triplet trans[], int n) {
+    for (int i = 0; i < n; i++) {
+        trans[i].row = mat[i].col;
+        trans[i].col = mat[i].row;
+        trans[i].value = mat[i].value;
+    }
+}
+
+int main() {
+    Triplet mat[100], trans[100];
+    int nonZero;
+
+    inputTriplet(mat, nonZero);
+
+    cout << "\nOriginal Matrix in Triplet Form:\n";
+    displayTriplet(mat, nonZero);
+
+    transpose(mat, trans, nonZero);
+
+    cout << "\nTransposed Matrix in Triplet Form:\n";
+    displayTriplet(trans, nonZero);
+
+    return 0;
+}
