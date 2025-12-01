@@ -1,0 +1,50 @@
+//Q8
+#include <iostream>
+using namespace std;
+
+struct Triplet {
+    int row;
+    int col;
+    int value;
+};
+
+void inputTriplet(Triplet mat[], int &nonZero) {
+    cout << "Enter number of non-zero elements: ";
+    cin >> nonZero;
+    cout << "Enter triplet elements (row col value):\n";
+    for (int i = 0; i < nonZero; i++) {
+        cin >> mat[i].row >> mat[i].col >> mat[i].value;
+    }
+}
+
+void displayTriplet(Triplet mat[], int n) {
+    cout << "Row\tCol\tValue\n";
+    for (int i = 0; i < n; i++) {
+        cout << mat[i].row << "\t" << mat[i].col << "\t" << mat[i].value << "\n";
+    }
+}
+
+void transpose(Triplet mat[], Triplet trans[], int n) {
+    for (int i = 0; i < n; i++) {
+        trans[i].row = mat[i].col;
+        trans[i].col = mat[i].row;
+        trans[i].value = mat[i].value;
+    }
+}
+
+int main() {
+    Triplet mat[100], trans[100];
+    int nonZero;
+
+    inputTriplet(mat, nonZero);
+
+    cout << "\nOriginal Matrix in Triplet Form:\n";
+    displayTriplet(mat, nonZero);
+
+    transpose(mat, trans, nonZero);
+
+    cout << "\nTransposed Matrix in Triplet Form:\n";
+    displayTriplet(trans, nonZero);
+
+    return 0;
+}
