@@ -1,0 +1,624 @@
+//1st question
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node* prev;
+    Node(int val) {
+        data = val;
+        next = prev = nullptr;
+    }
+};
+
+class DoublyLinkedList {
+    Node* head;
+public:
+    DoublyLinkedList() { head = nullptr; }
+
+    // Insert at beginning
+    void insertAtBeginning(int val) {
+        Node* newNode = new Node(val);
+        if (!head) {
+            head = newNode;
+            return;
+        }
+        newNode->next = head;
+        head->prev = newNode;
+        head = newNode;
+    }
+
+    // Insert at end
+    void insertAtEnd(int val) {
+        Node* newNode = new Node(val);
+        if (!head) {
+            head = newNode;
+            return;
+        }
+        Node* temp = head;
+        while (temp->next) temp = temp->next;
+        temp->next = newNode;
+        newNode->prev = temp;
+    }
+
+    // Insert after a specific node
+    void insertAfter(int key, int val) {
+        Node* temp = head;
+        while (temp && temp->data != key) temp = temp->next;
+        if (!temp) {
+            cout << "Node " << key << " not found.\n";
+            return;
+        }
+        Node* newNode = new Node(val);
+        newNode->next = temp->next;
+        newNode->prev = temp;
+        if (temp->next) temp->next->prev = newNode;
+        temp->next = newNode;
+    }
+
+    // Insert before a specific node
+    void insertBefore(int key, int val) {
+        if (!head) return;
+        if (head->data == key) {
+            insertAtBeginning(val);
+            return;
+        }
+        Node* temp = head;
+        while (temp && temp->data != key) temp = temp->next;
+        if (!temp) {
+            cout << "Node " << key << " not found.\n";
+            return;
+        }
+        Node* newNode = new Node(val);
+        newNode->next = temp;
+        newNode->prev = temp->prev;
+        temp->prev->next = newNode;
+        temp->prev = newNode;
+    }
+
+    // Delete a specific node
+    void deleteNode(int key) {
+        if (!head) return;
+        Node* temp = head;
+        while (temp && temp->data != key) temp = temp->next;
+        if (!temp) {
+            cout << "Node not found.\n";
+            return;
+        }
+        if (temp == head) head = head->next;
+        if (temp->next) temp->next->prev = temp->prev;
+        if (temp->prev) temp->prev->next = temp->next;
+        delete temp;
+    }
+
+    // Search for a node
+    void search(int key) {
+        Node* temp = head;
+        int pos = 1;
+        while (temp) {
+            if (temp->data == key) {
+                cout << "Node " << key << " found at position " << pos << endl;
+                return;
+            }
+            temp = temp->next;
+            pos++;
+        }
+        cout << "Node not found.\n";
+    }
+
+    void display() {
+        Node* temp = head;
+        if (!temp) {
+            cout << "List is empty.\n";
+            return;
+        }
+        cout << "Doubly Linked List: ";
+        while (temp) {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+};
+
+// ----------------------- Circular Linked List ------------------------
+
+class CircularLinkedList {
+    Node* last;
+public:
+    CircularLinkedList() { last = nullptr; }
+
+    // Insert at beginning
+    void insertAtBeginning(int val) {
+        Node* newNode = new Node(val);
+        if (!last) {
+            last = newNode;
+            last->next = last;
+            return;
+        }
+        newNode->next = last->next;
+        last->next = newNode;
+    }
+
+    // Insert at end
+    void insertAtEnd(int val) {
+        Node* newNode = new Node(val);
+        if (!last) {
+            last = newNode;
+            last->next = last;
+            return;
+        }
+        newNode->next = last->next;
+        last->next = newNode;
+        last = newNode;
+    }
+
+    // Insert after a specific node
+    void insertAfter(int key, int val) {
+        if (!last) return;
+        Node* temp = last->next;
+        do {
+            if (temp->data == key) {
+                Node* newNode = new Node(val);
+                newNode->next = temp->next;
+                temp->next = newNode;
+                if (temp == last) last = newNode;
+                return;
+            }
+            temp = temp->next;
+        } while (temp != last->next);
+        cout << "Node not found.\n";
+    }
+
+    // Delete a specific node
+    void deleteNode(int key) {
+        if (!last) return;
+        Node* curr = last->next;
+        Node* prev = last;
+        do {
+            if (curr->data == key) {
+                if (curr == last && curr == last->next) {
+                    delete curr;
+                    last = nullptr;
+                    return;
+                }
+                prev->next = curr->next;
+                if (curr == last) last = prev;
+                delete curr;
+                return;
+            }
+            prev = curr;
+            curr = curr->next;
+        } while (curr != last->next);
+        cout << "Node not found.\n";
+    }
+
+    // Search for a node
+    void search(int key) {
+        if (!last) {
+            cout << "List is empty.\n";
+            return;
+        }
+        Node* temp = last->next;
+        int pos = 1;
+        do {
+            if (temp->data == key) {
+                cout << "Node " << key << " found at position " << pos << endl;
+                return;
+            }
+            temp = temp->next;
+            pos++;
+        } while (temp != last->next);
+        cout << "Node not found.\n";
+    }
+
+    void display() {
+        if (!last) {
+            cout << "List is empty.\n";
+            return;
+        }
+        Node* temp = last->next;
+        cout << "Circular Linked List: ";
+        do {
+            cout << temp->data << " ";
+            temp = temp->next;
+        } while (temp != last->next);
+        cout << endl;
+    }
+};
+
+// ----------------------- Main Menu ------------------------
+
+int main() {
+    DoublyLinkedList dll;
+    CircularLinkedList cll;
+    int choice, type, val, key;
+
+    do {
+        cout << "\n--- LINKED LIST MENU ---\n";
+        cout << "1. Doubly Linked List Operations\n";
+        cout << "2. Circular Linked List Operations\n";
+        cout << "3. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> type;
+
+        if (type == 1) {
+            cout << "\n--- DOUBLY LINKED LIST ---\n";
+            cout << "1. Insert at Beginning\n2. Insert at End\n3. Insert After\n4. Insert Before\n5. Delete Node\n6. Search\n7. Display\n8. Back\n";
+            cout << "Enter choice: ";
+            cin >> choice;
+            switch (choice) {
+            case 1: cout << "Enter value: "; cin >> val; dll.insertAtBeginning(val); break;
+            case 2: cout << "Enter value: "; cin >> val; dll.insertAtEnd(val); break;
+            case 3: cout << "Insert after which node? "; cin >> key; cout << "Enter value: "; cin >> val; dll.insertAfter(key, val); break;
+            case 4: cout << "Insert before which node? "; cin >> key; cout << "Enter value: "; cin >> val; dll.insertBefore(key, val); break;
+            case 5: cout << "Enter node to delete: "; cin >> key; dll.deleteNode(key); break;
+            case 6: cout << "Enter value to search: "; cin >> key; dll.search(key); break;
+            case 7: dll.display(); break;
+            }
+        }
+        else if (type == 2) {
+            cout << "\n--- CIRCULAR LINKED LIST ---\n";
+            cout << "1. Insert at Beginning\n2. Insert at End\n3. Insert After\n4. Delete Node\n5. Search\n6. Display\n7. Back\n";
+            cout << "Enter choice: ";
+            cin >> choice;
+            switch (choice) {
+            case 1: cout << "Enter value: "; cin >> val; cll.insertAtBeginning(val); break;
+            case 2: cout << "Enter value: "; cin >> val; cll.insertAtEnd(val); break;
+            case 3: cout << "Insert after which node? "; cin >> key; cout << "Enter value: "; cin >> val; cll.insertAfter(key, val); break;
+            case 4: cout << "Enter node to delete: "; cin >> key; cll.deleteNode(key); break;
+            case 5: cout << "Enter value to search: "; cin >> key; cll.search(key); break;
+            case 6: cll.display(); break;
+            }
+        }
+        else if (type == 3) {
+            cout << "Exiting...\n";
+            break;
+        }
+    } while (type != 3);
+
+    return 0;
+}
+//2nd question
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int val) {
+        data = val;
+        next = nullptr;
+    }
+};
+
+class CircularLinkedList {
+    Node* last;  // pointer to the last node
+public:
+    CircularLinkedList() { last = nullptr; }
+
+    // Insert node at the end
+    void insertAtEnd(int val) {
+        Node* newNode = new Node(val);
+        if (!last) {
+            last = newNode;
+            last->next = last;  // first node points to itself
+            return;
+        }
+        newNode->next = last->next;
+        last->next = newNode;
+        last = newNode;
+    }
+
+    // Display all nodes, repeating head node at the end
+    void display() {
+        if (!last) {
+            cout << "List is empty.\n";
+            return;
+        }
+
+        Node* temp = last->next;  // head node
+        cout << "Circular Linked List: ";
+        do {
+            cout << temp->data << " ";
+            temp = temp->next;
+        } while (temp != last->next);
+        cout << last->next->data << endl;  // repeat head node value
+    }
+};
+
+int main() {
+    CircularLinkedList cll;
+    cll.insertAtEnd(20);
+    cll.insertAtEnd(100);
+    cll.insertAtEnd(40);
+    cll.insertAtEnd(80);
+    cll.insertAtEnd(60);
+
+    cll.display();
+
+    return 0;
+}
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int val) {
+        data = val;
+        next = nullptr;
+    }
+};
+
+class CircularLinkedList {
+    Node* last;  // pointer to the last node
+public:
+    CircularLinkedList() { last = nullptr; }
+
+    // Insert node at the end
+    void insertAtEnd(int val) {
+        Node* newNode = new Node(val);
+        if (!last) {
+            last = newNode;
+            last->next = last;  // first node points to itself
+            return;
+        }
+        newNode->next = last->next;
+        last->next = newNode;
+        last = newNode;
+    }
+
+    // Display all nodes, repeating head node at the end
+    void display() {
+        if (!last) {
+            cout << "List is empty.\n";
+            return;
+        }
+
+        Node* temp = last->next;  // head node
+        cout << "Circular Linked List: ";
+        do {
+            cout << temp->data << " ";
+            temp = temp->next;
+        } while (temp != last->next);
+        cout << last->next->data << endl;  // repeat head node value
+    }
+};
+
+int main() {
+    CircularLinkedList cll;
+    cll.insertAtEnd(20);
+    cll.insertAtEnd(100);
+    cll.insertAtEnd(40);
+    cll.insertAtEnd(80);
+    cll.insertAtEnd(60);
+
+    cll.display();
+
+    return 0;
+}
+//3rd question
+
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node* prev;
+    Node(int val) {
+        data = val;
+        next = prev = nullptr;
+    }
+};
+
+class DoublyLinkedList {
+    Node* head;
+public:
+    DoublyLinkedList() { head = nullptr; }
+
+    void insertAtEnd(int val) {
+        Node* newNode = new Node(val);
+        if (!head) {
+            head = newNode;
+            return;
+        }
+        Node* temp = head;
+        while (temp->next)
+            temp = temp->next;
+        temp->next = newNode;
+        newNode->prev = temp;
+    }
+
+    int getSize() {
+        int count = 0;
+        Node* temp = head;
+        while (temp) {
+            count++;
+            temp = temp->next;
+        }
+        return count;
+    }
+
+    void display() {
+        Node* temp = head;
+        cout << "Doubly Linked List: ";
+        while (temp) {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    DoublyLinkedList dll;
+    dll.insertAtEnd(10);
+    dll.insertAtEnd(20);
+    dll.insertAtEnd(30);
+    dll.insertAtEnd(40);
+
+    dll.display();
+    cout << "Size of Doubly Linked List: " << dll.getSize() << endl;
+    return 0;
+}
+//b part
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int val) {
+        data = val;
+        next = nullptr;
+    }
+};
+
+class CircularLinkedList {
+    Node* last;  // Pointer to last node
+public:
+    CircularLinkedList() { last = nullptr; }
+
+    void insertAtEnd(int val) {
+        Node* newNode = new Node(val);
+        if (!last) {
+            last = newNode;
+            last->next = last;
+            return;
+        }
+        newNode->next = last->next;
+        last->next = newNode;
+        last = newNode;
+    }
+
+    int getSize() {
+        if (!last) return 0;
+        int count = 0;
+        Node* temp = last->next;
+        do {
+            count++;
+            temp = temp->next;
+        } while (temp != last->next);
+        return count;
+    }
+
+    void display() {
+        if (!last) {
+            cout << "List is empty.\n";
+            return;
+        }
+        Node* temp = last->next;
+        cout << "Circular Linked List: ";
+        do {
+            cout << temp->data << " ";
+            temp = temp->next;
+        } while (temp != last->next);
+        cout << endl;
+    }
+};
+
+int main() {
+    CircularLinkedList cll;
+    cll.insertAtEnd(5);
+    cll.insertAtEnd(15);
+    cll.insertAtEnd(25);
+    cll.insertAtEnd(35);
+
+    cll.display();
+    cout << "Size of Circular Linked List: " << cll.getSize() << endl;
+    return 0;
+}
+//4th question
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    char data;
+    Node* next;
+    Node* prev;
+    Node(char val) {
+        data = val;
+        next = prev = nullptr;
+    }
+};
+
+class DoublyLinkedList {
+    Node* head;
+    Node* tail;
+
+public:
+    DoublyLinkedList() {
+        head = tail = nullptr;
+    }
+
+    // Insert a character at end
+    void insertAtEnd(char val) {
+        Node* newNode = new Node(val);
+        if (!head) {
+            head = tail = newNode;
+            return;
+        }
+        tail->next = newNode;
+        newNode->prev = tail;
+        tail = newNode;
+    }
+
+    // Check if the linked list is palindrome
+    bool isPalindrome() {
+        if (!head) return true;
+
+        Node* left = head;
+        Node* right = tail;
+
+        while (left != right && right->next != left) {
+            if (left->data != right->data)
+                return false;
+            left = left->next;
+            right = right->prev;
+        }
+        return true;
+    }
+
+    void display() {
+        Node* temp = head;
+        cout << "Doubly Linked List: ";
+        while (temp) {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    DoublyLinkedList dll;
+    int n;
+    char ch;
+
+    cout << "Enter number of characters: ";
+    cin >> n;
+
+    cout << "Enter characters:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> ch;
+        dll.insertAtEnd(ch);
+    }
+
+    dll.display();
+
+    if (dll.isPalindrome())
+        cout << "The Doubly Linked List is a Palindrome.\n";
+    else
+        cout << "The Doubly Linked List is NOT a Palindrome.\n";
+
+    return 0;
+}
