@@ -229,8 +229,8 @@ printf (" \n Upper Case to Lower case string is: %s", str);
 return 0;
 }
 
-
-//diagonal matrix
+//Q-5
+// diagonal matrix
 #include <stdio.h>
 #define MAX 4
 
@@ -253,7 +253,7 @@ int main() {
     return 0;
 }
 
-//tridiagonal
+// tridiagonal
 #include <stdio.h>
 #define MAX 4
 
@@ -276,7 +276,7 @@ int main() {
     return 0;
 }
 
-//triangular matrix
+// triangular matrix
 #include <stdio.h>
 #define MAX 4
 
@@ -309,7 +309,7 @@ int main() {
     return 0;
 }
 
-// Q-5e symmetric matrix
+//  symmetric matrix
 #include <iostream>
 using namespace std;
 
