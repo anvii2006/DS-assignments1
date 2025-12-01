@@ -1,0 +1,162 @@
+//q-1
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+void nearestSmallerToLeft(const vector<int>& A) {
+    int n = A.size();
+    stack<int> st;     
+    vector<int> ans(n); 
+
+    for (int i = 0; i < n; i++) {
+        while (!st.empty() && st.top() >= A[i]) {
+            st.pop();
+        }
+        if (st.empty()) {
+            ans[i] = -1;
+        } else {
+            ans[i] = st.top();
+        }
+        st.push(A[i]);
+    }
+    for (int i = 0; i < n; i++) {
+        cout << ans[i] << " ";
+    }
+}
+
+int main() {
+    vector<int> A = {4, 5, 2, 10, 8};
+
+    nearestSmallerToLeft(A);
+    return 0;
+}
+
+//q-2
+#include <iostream>
+#include <stack>
+using namespace std;
+
+class MinStack {
+    stack<long long> st;
+    long long currentMin;
+
+public:
+    MinStack() {}
+
+    void push(int x) {
+        if (st.empty()) {
+            st.push(x);
+            currentMin = x;
+        } else if (x >= currentMin) {
+            st.push(x);
+        } else {
+
+
+            long long encoded = 2LL * x - currentMin;
+            st.push(encoded);
+            currentMin = x; // new minimum
+        }
+    }
+
+    void pop() {
+        if (st.empty()) {
+            cout << "Stack underflow\n";
+            return;
+        }
+
+        long long topVal = st.top();
+        st.pop();
+
+        if (topVal >= currentMin) {
+        } else {
+            long long prevMin = 2LL * currentMin - topVal;
+            currentMin = prevMin;
+        }
+    }
+
+    int top() {
+        if (st.empty()) {
+            cout << "Stack is empty\n";
+            return -1;
+        }
+
+        long long topVal = st.top();
+        if (topVal >= currentMin) {
+            return (int)topVal;
+        } else {
+            // encoded → actual top is currentMin
+            return (int)currentMin;
+        }
+    }
+
+    int getMin() {
+        if (st.empty()) {
+            cout << "Stack is empty\n";
+            return -1;
+        }
+        return (int)currentMin;
+    }
+
+    bool empty() {
+        return st.empty();
+    }
+};
+
+int main() {
+    MinStack s;
+    s.push(5);
+    s.push(3);
+    s.push(7);
+    s.push(2);
+
+    cout << "Min = " << s.getMin() << "\n"; // 2
+    s.pop();                                // pop 2
+    cout << "Min = " << s.getMin() << "\n"; // 3
+    s.pop();                                // pop 7
+    cout << "Min = " << s.getMin() << "\n"; // 3
+    s.pop();                                // pop 3
+    cout << "Min = " << s.getMin() << "\n"; // 5
+
+    return 0;
+}
+
+//q-4
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+vector<int> dailyTemperatures(vector<int>& temperatures) {
+    int n = temperatures.size();
+    vector<int> answer(n, 0);      // default 0
+    stack<int> st;                 // will store indices
+
+ 
+    for (int i = n - 1; i >= 0; i--) {
+       
+        while (!st.empty() && temperatures[st.top()] <= temperatures[i]) {
+            st.pop();
+        }
+
+       
+        if (!st.empty()) {
+            answer[i] = st.top() - i;
+        } else {
+            answer[i] = 0;  // no warmer day
+        }
+
+        st.push(i);
+    }
+    return answer;
+}
+
+int main() {
+    vector<int> temps = {73, 74, 75, 71, 69, 72, 76, 73};
+    vector<int> ans = dailyTemperatures(temps);
+
+    for (int x : ans) {
+        cout << x << " ";
+    }
+    return 0;
+}
