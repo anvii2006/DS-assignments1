@@ -1,0 +1,159 @@
+//q-1
+#include <iostream>
+using namespace std;
+void printBinary(int num) {
+    int bin[32];
+    int i = 0;
+
+    while (num > 0) {
+        bin[i++] = num % 2;
+        num = num / 2;
+    }
+
+    // Print in reverse order
+    for (int j = i - 1; j >= 0; j--)
+        cout << bin[j];
+}
+void printBinaryNumbers(int n) {
+    for (int i = 1; i <= n; i++) {
+        printBinary(i);
+        if (i != n) cout << ", ";
+    }
+}
+
+int main() {
+    int n;
+    cout << "Enter n: ";
+    cin >> n;
+
+    printBinaryNumbers(n);
+    return 0;
+}
+
+//q-2
+#include <iostream>
+#include <queue>
+using namespace std;
+int findMin(queue<int>& q, int sortedCount) {
+    int minVal = INT_MAX;
+    int size = q.size();
+
+    for (int i = 0; i < size; i++) {
+        int x = q.front();
+        q.pop();
+
+        // Ignore already placed sorted elements
+        if (i < size - sortedCount && x < minVal)
+            minVal = x;
+
+        q.push(x);
+    }
+    return minVal;
+}
+void moveMinToRear(queue<int>& q, int minVal, int sortedCount) {
+    int size = q.size();
+    bool flag = false;
+
+    for (int i = 0; i < size; i++) {
+        int x = q.front();
+        q.pop();
+
+        // Place only one instance of min at rear
+        if (!flag && x == minVal && i < size - sortedCount) {
+            flag = true; // skip it
+        } else {
+            q.push(x);
+        }
+    }
+
+    // Add minimum element at rear
+    q.push(minVal);
+}
+void sortQueue(queue<int>& q) {
+    int size = q.size();
+
+    for (int i = 0; i < size; i++) {
+        int minVal = findMin(q, i);
+        moveMinToRear(q, minVal, i);
+    }
+}
+
+void printQueue(queue<int> q) {
+    while (!q.empty()) {
+        cout << q.front() << " ";
+        q.pop();
+    }
+}
+
+int main() {
+    queue<int> q;
+    q.push(11);
+    q.push(5);
+    q.push(4);
+    q.push(21);
+
+    cout << "Before Sorting: ";
+    printQueue(q);
+    cout << endl;
+
+    sortQueue(q);
+
+    cout << "After Sorting: ";
+    printQueue(q);
+
+    return 0;
+}
+//q-3
+#include <iostream>
+#include <queue>
+#include <stack>
+using namespace std;
+
+bool canBeSorted(queue<int> q) {
+    stack<int> st;
+    int n = q.size();
+    int expected = 1; 
+
+    while (!q.empty()) {
+        int x = q.front();
+        q.pop();
+        while (!st.empty() && st.top() == expected) {
+            st.pop();
+            expected++;
+        }
+
+        if (x == expected) {
+            // Send directly to output (conceptually)
+            expected++;
+        } else {
+            // Keep it in stack for later
+            st.push(x);
+        }
+    }
+    while (!st.empty() && st.top() == expected) {
+        st.pop();
+        expected++;
+    }
+    if (expected == n + 1 && st.empty())
+        return true;
+    else
+        return false;
+}
+
+int main() {
+    queue<int> q;
+
+    // Example: {5, 1, 2, 3, 4}
+    q.push(5);
+    q.push(1);
+    q.push(2);
+    q.push(3);
+    q.push(4);
+
+    if (canBeSorted(q))
+        cout << "Yes";
+    else
+        cout << "No";
+
+    return 0;
+}
