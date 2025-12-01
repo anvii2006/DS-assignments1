@@ -1,0 +1,372 @@
+#include <iostream>
+#define MAX 5
+using namespace std;
+
+class Queue {
+    int arr[MAX];
+    int front, rear;
+
+public:
+    Queue() {
+        front = -1;
+        rear = -1;
+    }
+
+    bool isFull() {
+        return (rear == MAX - 1);
+    }
+
+    bool isEmpty() {
+        return (front == -1 || front > rear);
+    }
+
+    void enqueue(int item) {
+        if (isFull()) {
+            cout << "Queue Overflow! Cannot insert " << item << endl;
+        } else {
+            if (front == -1) front = 0;
+            arr[++rear] = item;
+            cout << item << " inserted into the queue.\n";
+        }
+    }
+
+    void dequeue() {
+        if (isEmpty()) {
+            cout << "Queue Underflow! Cannot remove element.\n";
+        } else {
+            cout << arr[front] << " deleted from the queue.\n";
+            front++;
+        }
+    }
+
+    void display() {
+        if (isEmpty()) {
+            cout << "Queue is empty.\n";
+        } else {
+            cout << "Queue elements: ";
+            for (int i = front; i <= rear; i++)
+                cout << arr[i] << " ";
+            cout << endl;
+        }
+    }
+
+    void peek() {
+        if (isEmpty()) {
+            cout << "Queue is empty. No front element.\n";
+        } else {
+            cout << "Front element: " << arr[front] << endl;
+        }
+    }
+};
+
+int main() {
+    Queue q;
+    int choice, value;
+
+    cout << "\n--- Queue Operations Menu ---\n";
+    cout << "1. Enqueue\n2. Dequeue\n3. Peek\n4. Display\n5. Check if Empty\n6. Check if Full\n7. Exit\n";
+
+    do {
+        cout << "\nEnter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter value to enqueue: ";
+                cin >> value;
+                q.enqueue(value);
+                break;
+
+            case 2:
+                q.dequeue();
+                break;
+
+            case 3:
+                q.peek();
+                break;
+
+            case 4:
+                q.display();
+                break;
+
+            case 5:
+                if (q.isEmpty())
+                    cout << "Queue is empty.\n";
+                else
+                    cout << "Queue is not empty.\n";
+                break;
+
+            case 6:
+                if (q.isFull())
+                    cout << "Queue is full.\n";
+                else
+                    cout << "Queue is not full.\n";
+                break;
+
+            case 7:
+                cout << "Exiting program.\n";
+                break;
+
+            default:
+                cout << "Invalid choice! Please try again.\n";
+        }
+    } while (choice != 7);
+
+    return 0;
+}
+ //2nd question
+ #include <iostream>
+#define MAX 5
+using namespace std;
+
+class CircularQueue {
+    int arr[MAX];
+    int front, rear;
+
+public:
+    CircularQueue() {
+        front = -1;
+        rear = -1;
+    }
+
+    bool isEmpty() {
+        return (front == -1);
+    }
+
+    bool isFull() {
+        return ((rear + 1) % MAX == front);
+    }
+
+    void enqueue(int item) {
+        if (isFull()) {
+            cout << "Queue Overflow! Cannot insert " << item << endl;
+        } else {
+            if (front == -1)
+                front = 0;
+            rear = (rear + 1) % MAX;
+            arr[rear] = item;
+            cout << item << " inserted into the circular queue.\n";
+        }
+    }
+
+    void dequeue() {
+        if (isEmpty()) {
+            cout << "Queue Underflow! Cannot remove element.\n";
+        } else {
+            cout << arr[front] << " deleted from the circular queue.\n";
+            if (front == rear) {
+                // Queue has only one element
+                front = rear = -1;
+            } else {
+                front = (front + 1) % MAX;
+            }
+        }
+    }
+
+    void peek() {
+        if (isEmpty()) {
+            cout << "Queue is empty. No front element.\n";
+        } else {
+            cout << "Front element: " << arr[front] << endl;
+        }
+    }
+
+    void display() {
+        if (isEmpty()) {
+            cout << "Queue is empty.\n";
+//3rd question
+
+#include <iostream>
+#include <queue>
+using namespace std;
+
+void interleaveQueue(queue<int> &q) {
+    int n = q.size();
+
+    if (n % 2 != 0) {
+        cout << "Queue has an odd number of elements. Cannot interleave properly.\n";
+        return;
+    }
+
+    int half = n / 2;
+    queue<int> firstHalf;
+
+    // Move first half elements into another queue
+    for (int i = 0; i < half; i++) {
+        firstHalf.push(q.front());
+        q.pop();
+    }
+
+    // Interleave the two halves
+    while (!firstHalf.empty()) {
+        q.push(firstHalf.front());
+        firstHalf.pop();
+
+        q.push(q.front());
+        q.pop();
+    }
+}
+
+int main() {
+    queue<int> q;
+    int n, val;
+
+    cout << "Enter number of elements (even number): ";
+ //4th question
+ #include <iostream>
+#include <queue>
+using namespace std;
+
+void firstNonRepeating(string str) {
+    queue<char> q;
+    int freq[26] = {0}; // frequency array for lowercase letters
+
+    cout << "Output: ";
+    for (char ch : str) {
+        // Increment frequency
+        freq[ch - 'a']++;
+
+        // Push current character into queue
+        q.push(ch);
+
+        // Remove characters from front which are repeating
+        while (!q.empty() && freq[q.front() - 'a'] > 1) {
+            q.pop();
+        }
+
+        // If queue is empty, no non-repeating char found yet
+        if (q.empty())
+            cout << "-1 ";
+        else
+            cout << q.front() << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+    string input;
+    cout << "Enter the string (characters separated by spaces are allowed): ";
+    getline(cin, input);
+
+    // Remove spaces if any (as per given sample)
+    string str = "";
+    for (char ch : input)
+        if (ch != ' ')
+            str += ch;
+
+    firstNonRepeating(str);
+    return 0;
+}
+//5th question
+#include <iostream>
+#include <queue>
+using namespace std;
+
+class Stack {
+    queue<int> q1, q2;
+
+public:
+    void push(int x) {
+        q2.push(x);
+        while (!q1.empty()) {
+            q2.push(q1.front());
+            q1.pop();
+        }
+        swap(q1, q2);
+    }
+
+    void pop() {
+        if (q1.empty())
+            cout << "Stack Underflow\n";
+        else
+            q1.pop();
+    }
+
+    void top() {
+        if (q1.empty())
+            cout << "Stack is empty\n";
+        else
+            cout << "Top element: " << q1.front() << endl;
+    }
+
+    void display() {
+        if (q1.empty()) {
+            cout << "Stack is empty\n";
+            return;
+        }
+        queue<int> temp = q1;
+        cout << "Stack (top to bottom): ";
+        while (!temp.empty()) {
+            cout << temp.front() << " ";
+            temp.pop();
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    Stack s;
+    s.push(10);
+    s.push(20);
+    s.push(30);
+    s.display();
+    s.pop();
+    s.display();
+    s.top();
+}
+//b part
+#include <iostream>
+#include <queue>
+using namespace std;
+
+class Stack {
+    queue<int> q;
+
+public:
+    void push(int x) {
+        q.push(x);
+        for (int i = 0; i < q.size() - 1; i++) {
+            q.push(q.front());
+            q.pop();
+        }
+    }
+
+    void pop() {
+        if (q.empty())
+            cout << "Stack Underflow\n";
+        else
+            q.pop();
+    }
+
+    void top() {
+        if (q.empty())
+            cout << "Stack is empty\n";
+        else
+            cout << "Top element: " << q.front() << endl;
+    }
+
+    void display() {
+        if (q.empty()) {
+            cout << "Stack is empty\n";
+            return;
+        }
+        queue<int> temp = q;
+        cout << "Stack (top to bottom): ";
+        while (!temp.empty()) {
+            cout << temp.front() << " ";
+            temp.pop();
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    Stack s;
+    s.push(5);
+    s.push(10);
+    s.push(15);
+    s.display();
+    s.pop();
+    s.display();
+    s.top();
+}
